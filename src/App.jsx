@@ -1,10 +1,14 @@
 import { useState } from 'react'
 import './App.css'
+import Axios from 'axios'
+import {Image} from 'cloudinary-react'
 
 function App() {
+
+
   let [numLikes, setNumLikes] = useState(0)
   // ! Need state for name, to be displayed on DOM
-  let [name, setName] = useState("Key")
+  let [name, setName] = useState("Kalia")
   // ! Need state for the input field's value
   let [nameInput, setNameInput] =  useState("")
 
@@ -27,6 +31,22 @@ function App() {
 
   // Rendering section where JSX is written
     // JSX is html-like syntax that can be mixed with JS
+
+
+  const [imageSelected,setImageSelected]=useState('') 
+  const uploadImage=()=>{
+    const formData = new FormData()
+      formData.append('file',imageSelected)
+      formData.append('upload_preset', 'tgekjxb2')
+
+      Axios.post('https://api.cloudinary.com/v1_1/dk2xkbyhb/image/upload',
+        formData
+      ).then((response) => {
+
+      });
+
+
+  }  
   return (
     <div>
       <h1>React Form</h1>
@@ -47,8 +67,24 @@ function App() {
 
       <button onClick={() => handleSubmit()}>Submit</button>
 
+      <div>
+        <input
+        type='file'
+        onChange={(event)=>{
+          setImageSelected(event.target.files[0])
+        }}/>
+    <button onClick={uploadImage}> upload Image</button>
+    <Image 
+    style={{width:200}}
+    cloudName='dk2xkbyhb' 
+    publicId='https://res.cloudinary.com/dk2xkbyhb/image/upload/v1719205126/ahyra2rpgoy14kxbb5ut.jpg'
+    />
+    
+      </div>
+
     </div>
-  )
+  ) 
 }
 
 export default App
+ 
